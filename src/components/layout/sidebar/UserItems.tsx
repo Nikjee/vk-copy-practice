@@ -11,9 +11,12 @@ import {
 import { QuestionAnswer } from '@mui/icons-material'
 import React, { FC } from 'react'
 import { Link, useHistory } from 'react-router-dom'
+import { IUser } from '../../../Types'
+import { users } from './dataUsers'
 
 const UserItems: FC = () => {
   const history = useHistory()
+
   return (
     <Card
       variant='outlined'
@@ -24,9 +27,10 @@ const UserItems: FC = () => {
         borderRadius: 3,
       }}
     >
-      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+      {users.map((user) => (
         <Link
-          to='/profile'
+          key={user._id}
+          to={`/profile/${user._id}`}
           style={{
             display: 'flex',
             alignItems: 'center',
@@ -39,13 +43,12 @@ const UserItems: FC = () => {
             sx={{
               position: 'relative',
               marginRight: 2,
-              overflow: 'hidden',
               width: 50,
               height: 50,
             }}
           >
             <Avatar
-              src='img'
+              src={user.avatar}
               alt=''
               sx={{
                 width: 46,
@@ -53,32 +56,34 @@ const UserItems: FC = () => {
                 borderRadius: '50%',
               }}
             />
-            <Box
-              sx={{
-                backgroundColor: '#4FB14F',
-                border: '1px solid #f1f7fa',
-                width: 12,
-                height: 12,
-                position: 'absolute',
-                bottom: 0,
-                right: 0,
-                borderRadius: '50%',
-              }}
-            ></Box>
+            {user.isInNetwork && (
+              <Box
+                sx={{
+                  backgroundColor: '#4FB14F',
+                  border: '1px solid #f1f7fa',
+                  width: 12,
+                  height: 12,
+                  position: 'absolute',
+                  bottom: 0,
+                  right: 0,
+                  borderRadius: '50%',
+                }}
+              />
+            )}
           </Box>
-          <span style={{ fontSize: 14 }}>Дмитрий Лыжин</span>
+          <span style={{ fontSize: 14 }}>{user.name}</span>
         </Link>
-        <List>
-          <ListItem disablePadding>
-            <ListItemButton onClick={() => history.push('/messages')}>
-              <ListItemIcon>
-                <QuestionAnswer />
-              </ListItemIcon>
-              <ListItemText primary='Сообщения' />
-            </ListItemButton>
-          </ListItem>
-        </List>
-      </Box>
+      ))}
+      <List>
+        <ListItem disablePadding>
+          <ListItemButton onClick={() => history.push('/messages')}>
+            <ListItemIcon>
+              <QuestionAnswer />
+            </ListItemIcon>
+            <ListItemText primary='Сообщения' />
+          </ListItemButton>
+        </ListItem>
+      </List>
     </Card>
   )
 }

@@ -1,8 +1,17 @@
-import React, { FC } from 'react'
+import { Box } from '@mui/material'
+import React, { FC, useState } from 'react'
+import { IPost } from '../../../Types'
+import AddPost from './AddPost'
+import { initialPosts } from './initialPosts'
+import Posts from './Posts'
 
-const Home:FC = () => {
+const Home: FC = () => {
+  const [posts, setPosts] = useState<IPost[]>(initialPosts)
   return (
-    <div>Home</div>
+    <Box>
+      <AddPost setPosts={setPosts} />
+      <Posts posts={posts} />
+    </Box>
   )
 }
 
