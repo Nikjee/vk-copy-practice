@@ -1,12 +1,12 @@
-import { Link } from 'react-router-dom'
-import { Box } from '@mui/system'
 import React, { FC } from 'react'
 import UserItems from './UserItems'
+import Menu from './Menu'
 
 const Sidebar: FC = () => {
   return (
     <div>
       <UserItems />
+      <Menu />
     </div>
   )
 }

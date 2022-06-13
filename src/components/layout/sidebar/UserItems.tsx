@@ -1,10 +1,22 @@
-import { Avatar, Box, Card } from '@mui/material'
+import {
+  Avatar,
+  Box,
+  Card,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+} from '@mui/material'
+import { QuestionAnswer } from '@mui/icons-material'
 import React, { FC } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 
 const UserItems: FC = () => {
+  const history = useHistory()
   return (
     <Card
+      variant='outlined'
       sx={{
         padding: 2,
         backgroundColor: '#f1f7fa',
@@ -56,6 +68,16 @@ const UserItems: FC = () => {
           </Box>
           <span style={{ fontSize: 14 }}>Дмитрий Лыжин</span>
         </Link>
+        <List>
+          <ListItem disablePadding>
+            <ListItemButton onClick={() => history.push('/messages')}>
+              <ListItemIcon>
+                <QuestionAnswer />
+              </ListItemIcon>
+              <ListItemText primary='Сообщения' />
+            </ListItemButton>
+          </ListItem>
+        </List>
       </Box>
     </Card>
   )
