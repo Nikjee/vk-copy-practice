@@ -3,12 +3,13 @@ import { createContext, FC, useEffect, useMemo, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { IUser, TypeSetState } from '../../Types'
 import { users } from '../layout/sidebar/dataUsers'
-import { getFirestore } from 'firebase/firestore'
+import { getFirestore, Firestore } from 'firebase/firestore'
 
 interface IContext {
   user: IUser | null
   setUser: TypeSetState<IUser | null>
   ga: Auth
+  db: Firestore
 }
 
 export const AuthContext = createContext({} as IContext)
@@ -46,7 +47,7 @@ export const AuthProvider: FC = ({ children }) => {
       ga,
       db,
     }),
-    [user, ga]
+    [user, ga, db]
   )
   return (
     <AuthContext.Provider value={{ user, setUser, ga }}>

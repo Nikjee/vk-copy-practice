@@ -1,26 +1,32 @@
 import { Avatar, ImageList, ImageListItem } from '@mui/material'
 import { Box } from '@mui/system'
-import React, { FC } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import { IPost } from '../../../Types'
+import { useAuth } from '../../providers/useAuth'
+import { initialPosts } from './initialPosts'
+import { onSnapshot, collection } from 'firebase/firestore'
 
-interface IPosts {
-  posts: IPost[]
-}
+const Posts: FC = () => {
+  const { db } = useAuth()
+  const [posts, setPosts] = useState<IPost[]>(initialPosts)
 
-const Posts: FC<IPosts> = ({ posts }) => {
+  useEffect(() => {
+    const unsub = onSnapshot(collection(db, 'post'), (doc) => {
+      doc.forEach((d: any) => {
+        setPosts((prev) => [...prev, d.data()])
+      })
+    })
+
+    return () => {
+      unsub()
+    }
+  }, [])
+
   return (
     <>
       {posts.map((post, idx) => (
-        <Box
-          sx={{
-            border: '1px solid #e2e2e2',
-            borderRadius: '10px',
-            padding: 2,
-            marginTop: 4,
-          }}
-          key={`Post-${idx}`}
-        >
+        <Card key={`Post-${idx}`}>
           <Link
             key={post.author._id}
             to={`/profile/${post.author._id}`}
@@ -68,7 +74,7 @@ const Posts: FC<IPosts> = ({ posts }) => {
               ))}
             </ImageList>
           )}
-        </Box>
+        </Card>
       ))}
     </>
   )
